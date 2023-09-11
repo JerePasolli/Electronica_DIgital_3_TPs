@@ -17,26 +17,23 @@
 #include <cr_section_macros.h>
 
 void configGpio(void);
-uint32_t numDisplay [10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x67};
-uint32_t delayLeds = 1000;
 
 int main(void) {
-    configGpio();
+
+	uint32_t pulsador [2] = {0, 0};
+	configGpio();
+
     while(1) {
-      for(uint32_t i=0; i<10; i++){
-    	  LPC_GPIO2->FIOSET |= numDisplay[i]; // Muestra numeros del 0 al 9 indefinidamente en display
-    	  retardo(delayLeds);
-      }
+    	for(uint32_t i=0; i<2; i++){
+			pulsador[i] = (LPC_GPIO0->FIOPIN >> i) & 1; // se lee el pin y se guarda el valor en el arreglo
+    	}												//0 corresponde a pulsador presionado en este caso
+
     }
     return 0 ;
 }
 
 void configGpio(void){
-	LPC_PINCON->PINSEL4 &= ~(0xffff); // P2.0 a P2.7 como GPIO
-	LPC_GPIO2->FIODIR |= 0xff; // P2.0 a P2.7 como salidas
-}
-
-void retardo(uint32_t cuenta){
-	for(uint32_t i=0; i<cuenta; i++)
-			for(uint32_t j=0; j<cuenta; j++);
+	LPC_PINCON->PINSEL0 &= ~(0xf); // P0.0 a P0.1 como GPIO
+	LPC_PINCON->PINMODE0 &= ~(0xf); // P0.0 a P0.1 con resistencias de pull up
+	LPC_GPIO0->FIODIR &= ~(0b11); // P0.0 a P0.1 como entradas
 }

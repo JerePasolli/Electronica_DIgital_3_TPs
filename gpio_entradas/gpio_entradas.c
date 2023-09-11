@@ -21,7 +21,7 @@ uint32_t acumulador = 0;
 
 int main(void) {
 
-
+    configGpio();
     while(1) {
        if((LPC_GPIO0->FIOPIN>>4) & 1){ //leo P0.4
     	  for(uint32_t i=0; i<=3; i++)
