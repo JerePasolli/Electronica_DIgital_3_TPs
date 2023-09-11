@@ -16,16 +16,6 @@
 
 #include <cr_section_macros.h>
 
-#define LED0	(1)
-#define LED1	(1<<1)
-#define LED2	(1<<2)
-#define LED3	(1<<3)
-#define LED4	(1<<4)
-#define LED5	(1<<5)
-#define LED6	(1<<6)
-#define LED7	(1<<7)
-#define LED8	(1<<8)
-#define LED9	(1<<9)
 
 void retardo(uint32_t);
 void secuenciaA();
@@ -45,7 +35,7 @@ int main(void) {
 }
 
 void configGpio(void){
-	LPC_PINCON->PINSEL0 &= ~(0x3ff); // P0.0 a P0.9 como GPIO
+	LPC_PINCON->PINSEL0 &= ~(0xfffff); // P0.0 a P0.9 como GPIO
 	LPC_GPIO0->FIODIR |= 0x3ff; // P0.0 a P0.9 como salidas
 }
 
